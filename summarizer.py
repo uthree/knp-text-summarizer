@@ -9,11 +9,18 @@ def summarize(text, depth=-1):
     # parse
     text = text.replace(' ', '')
     text = text.replace('　', '')
+    text = text.replace("\t", '')
     for sentence in text.strip().split('\n'):
-        result = knp.parse(sentence)
+        try:
+            result = knp.parse(sentence)
+        except Exception as e:
+            print(e)
+            print("ERROR")
+            output_sentences.append(sentence)
+            continue
+            
         # search roots
         roots = [m for m in result if m.parent == None]
-
 
         def get_depth(bnst, d):
             if d <= 0:
